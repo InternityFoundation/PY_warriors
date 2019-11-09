@@ -17,11 +17,18 @@ const {
 // Import the firebase-functions package for deployment.
 const functions = require('firebase-functions');
 
+const admin = require('firebase-admin');
+
+admin.initializeApp(functions.config().firebase);
+
+let db = admin.firestore();
+
+
 // using Twilio SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
 const sgMail = require('@sendgrid/mail');
 
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
   to: 'maurya3598@gmail.com',
   from: 'mauryasrish@gmail.com',
