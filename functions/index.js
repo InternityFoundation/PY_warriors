@@ -63,6 +63,7 @@ app.intent('actions_intent_PERMISSIONS', (conv, params, permissionGranted) => {
 // Handle the Dialogflow intent named 'Number'.
 // The intent collects a parameter named 'PhoneNumber'.
 app.intent('Number', (conv, {PhoneNumber}) => {
+    PhoneNumber='0' + PhoneNumber;
     if (conv.data.userName) {
       conv.ask(`Thank you ${conv.data.userName}. Your phone number is ${PhoneNumber} Would you like to confirm that?`);
       conv.ask(new Suggestions('Yes', 'No'));
