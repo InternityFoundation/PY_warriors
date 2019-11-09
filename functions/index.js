@@ -17,6 +17,20 @@ const {
 // Import the firebase-functions package for deployment.
 const functions = require('firebase-functions');
 
+// using Twilio SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey('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');
+const msg = {
+  to: 'maurya3598@gmail.com',
+  from: 'mauryasrish@gmail.com',
+  subject: 'Sending with Twilio SendGrid is Fun',
+  text: 'and easy to do anywhere, even with Node.js',
+  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+};
+
+
 // Instantiate the Dialogflow client.
 const app = dialogflow({debug: true});
 
@@ -30,7 +44,7 @@ app.intent('Default Welcome Intent', (conv) => {
 
 // Handle the Dialogflow intent named 'actions_intent_PERMISSION'. 
 //If user agreed to PERMISSION prompt, then boolean value 'permissionGranted' is true.
-app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
+app.intent('actions_intent_PERMISSIONS', (conv, params, permissionGranted) => {
   if (!permissionGranted) {
     conv.ask(`Ok, no worries. Please tell me your mobile number?`);
   } else {
@@ -67,9 +81,11 @@ app.intent('Grievance - no', (conv) => {
   if (conv.data.userName) {
     conv.close(`Thank you ${conv.data.userName} for cooperation. You will be receiving an email shortly comprising a reference number to your complaint. 
               Our team will get back to you very soon to resolve your grievance.`);
+    sgMail.send(msg);
   } else {
     conv.close(`Thanks alot for cooperation. You will be receiving an email shortly comprising a reference number to your complaint. 
                 Our team will get back to you very soon to resolve your grievance.`);
+    sgMail.send(msg);
   }
 });
 
